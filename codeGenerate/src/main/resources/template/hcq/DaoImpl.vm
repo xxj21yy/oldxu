@@ -1,0 +1,122 @@
+package ${dao_impl_package};
+
+import ${entry_package}.${model}Pojo;
+import ${mapper_package}.${model}Mapper;
+import ${dao_package}.${model}Dao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import java.util.List;
+
+/**
+ * ${model}DaoImpl接口
+ * Created by ${author} on ${ctime}.
+ */
+@Repository
+public class ${model}DaoImpl implements ${model}Dao{
+
+    @Autowired
+    private ${model}Mapper ${model_low_first}Mapper;
+    /**
+     * 获取数据条数
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public long count(${model}Pojo ${model_low_first}Pojo){
+        return ${model_low_first}Mapper.count(${model_low_first}Pojo);
+    }
+
+    /**
+     * 获取单条数据
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public ${model}Pojo get(long id) {
+        return ${model_low_first}Mapper.get(id);
+    }
+    /**
+     * 获取单条数据
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public ${model}Pojo get(${model}Pojo ${model_low_first}Pojo) {
+        return ${model_low_first}Mapper.get(${model_low_first}Pojo);
+    }
+
+    /**
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public List<${model}Pojo> findList(${model}Pojo ${model_low_first}Pojo) {
+        return ${model_low_first}Mapper.findList(${model_low_first}Pojo);
+    }
+    /**
+     * 查询所有数据列表
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public List<${model}Pojo> findAllList(${model}Pojo ${model_low_first}Pojo) {
+        return ${model_low_first}Mapper.findAllList(${model_low_first}Pojo);
+    }
+    /**
+     * 查询所有数据列表
+     *
+     * @return
+     */
+    @Override
+    public List<${model}Pojo> findAllList() {
+        return ${model_low_first}Mapper.findAllList();
+    }
+    /**
+     * 插入数据
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public int insert(${model}Pojo ${model_low_first}Pojo) {
+        return ${model_low_first}Mapper.insert(${model_low_first}Pojo);
+    }
+
+    /**
+     * 更新数据
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public int update(${model}Pojo ${model_low_first}Pojo) {
+        return ${model_low_first}Mapper.update(${model_low_first}Pojo);
+    }
+
+    /**
+     * 删除数据（一般为逻辑删除，更新yn字段为1）
+     *
+     * @param id
+     * @return
+     * @see int delete(${model}Pojo ${model_low_first}Pojo)
+     */
+    @Override
+    public int delete(long id) {
+        return ${model_low_first}Mapper.delete(id);
+    }
+
+    /**
+     * 删除数据（一般为逻辑删除，更新yn字段为1）
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    @Override
+    public int delete(${model}Pojo ${model_low_first}Pojo) {
+        return ${model_low_first}Mapper.delete(${model_low_first}Pojo);
+    }
+}

@@ -1,0 +1,18 @@
+package ${service_package};
+
+import com.qfy.common.tool.order.ResultDTO;
+import ${entry_package}.${model}Pojo;
+
+/**
+ * ${model}Service接口
+ * table ${table}
+ * comment ${table_coment}
+ * Created by ${author} on ${ctime}.
+ */
+public interface ${model}Service {
+    /**
+     * 分页
+     */
+    ResultDTO<${model}Pojo> get${model}List(${model}Pojo ${model_low_first}Pojo);
+
+}

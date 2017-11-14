@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${mapper_package}.${model}Mapper">
+
+    <resultMap id="BaseResultMap" type="${entry_package}.${model}Pojo">
+    #foreach($column in $columns)
+        #if($column.name == "id")
+
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        #else
+
+        <result column="$column.columnName" jdbcType="$column.mybatisType" property="$column.name"/>
+        #end
+    #end
+
+        <result column="create_user" jdbcType="BIGINT" property="createUser"/>
+
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+
+        <result column="update_user" jdbcType="BIGINT" property="updateUser"/>
+
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <result column="yn" jdbcType="TINYINT" property="yn"/>
+
+    </resultMap>
+
+    <sql id="genTableColumnColumns">
+    #foreach($column in $columns)
+        a.$column.columnName,
+    #end
+        a.create_user,
+            a.create_time,
+            a.update_user,
+            a.update_time,
+            a.yn
+    </sql>
+
+    <sql id="genTableColumnJoins">
+    </sql>
+
+
+    <sql id="Example_Where_Clause">
+    </sql>
+
+    <select id="count" resultType="long" parameterType="${entry_package}.${model}Pojo">
+        select count(1)
+        from ${table}
+        WHERE yn = #{YN}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <select id="get" resultMap="BaseResultMap" parameterType="long">
+        SELECT
+        <include refid="genTableColumnColumns"/>
+        FROM ${table} a
+        <include refid="genTableColumnJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultMap="BaseResultMap" parameterType="${entry_package}.${model}Pojo">
+        SELECT
+        <include refid="genTableColumnColumns"/>
+        FROM ${table} a
+        <include refid="genTableColumnJoins"/>
+        WHERE yn = #{YN}
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="findAllList" resultMap="BaseResultMap" parameterType="${entry_package}.${model}Pojo">
+        SELECT
+        <include refid="genTableColumnColumns"/>
+        FROM ${table} a
+        <include refid="genTableColumnJoins"/>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        WHERE a.yn = #{YN}
+    </select>
+
+    <insert id="insert" parameterType="${entry_package}.${model}Pojo">
+        INSERT INTO ${table}(
+        #foreach($column in $columns)$column.columnName,
+        #end
+
+        create_user,
+        create_time,
+        yn
+        ) VALUES (
+        #foreach($column in $columns)#{$column.name},
+        #end#{createUser},
+        now(),
+        #{YN}
+        )
+    </insert>
+
+    <update id="update" parameterType="${entry_package}.${model}Pojo">
+        UPDATE ${table} SET
+        #foreach($column in $columns)#if($column.columnName!="id")
+
+        $column.columnName = #{$column.name},
+        #end#end update_user = #{updateUser},
+        update_time = now()
+        WHERE a.id = #{id}
+    </update>
+
+    <update id="delete" parameterType="long">
+        UPDATE ${table} SET
+        yn = {NOT_YN}
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

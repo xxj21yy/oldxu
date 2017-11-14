@@ -1,0 +1,90 @@
+package ${dao_package};
+
+import ${entry_package}.${model}Pojo;
+
+import java.util.List;
+
+/**
+ * ${model}Mapper接口
+ * Created by ${author} on ${ctime}.
+ */
+public interface ${model}Dao {
+
+    /**
+     * 获取数据条数
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    long count(${model}Pojo ${model_low_first}Pojo);
+
+    /**
+     * 获取单条数据
+     *
+     * @param id
+     * @return
+     */
+    ${model}Pojo get(long id);
+
+    /**
+     * 获取单条数据
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    ${model}Pojo get(${model}Pojo ${model_low_first}Pojo);
+
+    /**
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    List<${model}Pojo> findList(${model}Pojo ${model_low_first}Pojo);
+
+    /**
+     * 查询所有数据列表
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    List<${model}Pojo> findAllList(${model}Pojo ${model_low_first}Pojo);
+
+    /**
+     * 查询所有数据列表
+     *
+     * @return
+     */
+    List<${model}Pojo> findAllList();
+
+    /**
+     * 插入数据
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    int insert(${model}Pojo ${model_low_first}Pojo);
+
+    /**
+     * 更新数据
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    int update(${model}Pojo ${model_low_first}Pojo);
+
+    /**
+     * 删除数据（一般为逻辑删除，更新yn字段为1）
+     *
+     * @param id
+     * @return
+     * @see int delete(${model}Pojo ${model_low_first}Pojo)
+     */
+    int delete(long id);
+
+    /**
+     * 删除数据（一般为逻辑删除，更新yn字段为1）
+     *
+     * @param ${model_low_first}Pojo
+     * @return
+     */
+    int delete(${model}Pojo ${model_low_first}Pojo);
+}

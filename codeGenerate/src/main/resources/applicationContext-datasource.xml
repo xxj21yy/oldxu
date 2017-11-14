@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd        
+				http://www.springframework.org/schema/aop       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd        
+				http://www.springframework.org/schema/context   http://www.springframework.org/schema/context/spring-context-4.0.xsd        
+				http://www.springframework.org/schema/mvc	    http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd        
+				http://www.springframework.org/schema/tx        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd 
+				http://www.springframework.org/schema/util     	http://www.springframework.org/schema/util/spring-util-4.0.xsd
+				http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<context:property-placeholder ignore-unresolvable="true" location="classpath:datasource.properties" />
+
+	<bean id="dataSource" class="com.p6spy.engine.spy.P6DataSource">
+		<constructor-arg ref="dataSource_org"></constructor-arg>
+	</bean>
+	<bean id="dataSource_org" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${datasource.driverClass}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${datasource.initialSize}" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="${datasource.maxActive}" />
+		<!-- 连接池最大空闲 -->
+		<!-- <property name="maxIdle" value="20" /> -->
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="${datasource.minIdle}" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="${datasource.maxWait}" />
+		<property name="validationQuery" value="${datasource.validationQuery}" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${datasource.timeBetweenEvictionRunsMillis}" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${datasource.minEvictableIdleTimeMillis}" />
+		<!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandoned" value="true" />
+		<!-- -->
+		<property name="removeAbandonedTimeout" value="${datasource.removeAbandonedTimeout}" />
+		<!-- 关闭abanded连接时输出错误日志 -->
+		<property name="logAbandoned" value="true" />
+		<!-- 开启Druid的监控统计功能 -->
+		<property name="filters" value="stat" />
+		<!--<property name="filters" value="mergeStat" /> -->
+		<!-- Oracle连接是获取字段注释 -->
+		<property name="connectProperties">
+			<props>
+				<prop key="remarksReporting">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- spring管理事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:com/qfy/mapper/*.xml" />
+		<property name="typeAliasesPackage" value="com.qfy.mapper" />
+
+	</bean>
+
+	<!-- 通过扫描的模式,自动注入bean -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="basePackage" value="com.qfy.mapper" />
+	</bean>
+
+	<!-- 当在程序中使用注解的事务时用 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- Spring的声明式事务管理 -->
+	<!-- 设置与事务有关的各种属性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="insert*" propagation="REQUIRED"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="select*" read-only="true" propagation="SUPPORTS" />
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="query*" read-only="true" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="select*" read-only="true" />
+			<tx:method name="list*" read-only="true" />
+			<tx:method name="is*" read-only="true" />
+			<tx:method name="*PageList" read-only="true" />
+			<!-- <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" 
+				/> -->
+		</tx:attributes>
+	</tx:advice>
+</beans>

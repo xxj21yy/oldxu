@@ -1,0 +1,12 @@
+package ${mapper_package};
+
+import ${entry_package}.${model}Pojo;
+import ${base_mapper_package}.BaseMapper;
+
+/**
+ * ${model}Mapper接口
+ * Created by ${author} on ${ctime}.
+ */
+public interface ${model}Mapper extends BaseMapper<${model}Pojo> {
+
+}

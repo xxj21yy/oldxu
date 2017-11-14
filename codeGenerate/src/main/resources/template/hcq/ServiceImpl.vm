@@ -1,0 +1,40 @@
+package ${service_impl_package};
+
+import com.qfy.common.tool.ConstCode;
+import com.qfy.common.tool.order.ResultDTO;
+import ${dao_package}.${model}Dao;
+import ${entry_package}.${model}Pojo;
+import ${service_package}.${model}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * ${model}Service接口实现
+ * table ${table}
+ * comment ${table_coment}
+ * Created by ${author} on ${ctime}.
+ */
+@Service
+public class ${model}ServiceImpl implements ${model}Service {
+
+    @Autowired
+    ${model}Dao ${model_low_first}Dao;
+
+    @Override
+    public ResultDTO<${model}Pojo> get${model}List(${model}Pojo ${model_low_first}Pojo) {
+        ResultDTO resultDTO = new ResultDTO();
+        long count = ${model_low_first}Dao.count(${model_low_first}Pojo);
+        List<${model}Pojo> list = ${model_low_first}Dao.findList(${model_low_first}Pojo);
+
+
+        resultDTO.setPage(${model_low_first}Pojo.getPage());
+        resultDTO.setPageSize(${model_low_first}Pojo.getPageSize());
+        resultDTO.setTotal(count);
+        resultDTO.setListData(list);
+        resultDTO.setResult(true);
+        resultDTO.setCode(ConstCode.OPERAT_SUCCESS);
+        return resultDTO;
+    }
+}

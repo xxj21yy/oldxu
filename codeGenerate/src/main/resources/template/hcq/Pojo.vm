@@ -1,0 +1,31 @@
+package ${entry_package};
+
+import ${base_entry_package}.BaseEntry;
+
+/**
+ * ${model}Pojo实体
+ * table ${table}
+ * comment ${table_coment}
+ * Created by ${author} on ${ctime}.
+ */
+public class ${model}Pojo extends BaseEntry {
+    #foreach($column in $columns)
+
+    /**
+     *$column.comment
+    */
+    private $column.type $column.name;
+    #end
+
+    #foreach($column in $columns)
+
+    public void set$column.upName ($column.type $column.name){
+        this.$column.name = $column.name;
+    }
+
+    public $column.type get$column.upName (){
+        return $column.name;
+    }
+    #end
+
+}
